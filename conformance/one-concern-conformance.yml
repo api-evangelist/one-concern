@@ -1,0 +1,107 @@
+generated: '2026-08-26'
+method: derived
+source: >-
+  openapi/one-concern-domino-ai-openapi.json, https://developer.oneconcern.com/overview,
+  https://developer.oneconcern.com/calculation-process, https://oneconcern.com/en/products/dna/,
+  and probes recorded in well-known/one-concern-well-known.yml
+name: One Concern Domino AI API Conformance
+description: >-
+  Cross-cutting and domain-standard conformance assertions for the Domino AI API. Each entry
+  states whether the contract or the provider's own documentation demonstrates conformance, with
+  the evidence that decided it. Absence is recorded as false with evidence, not omitted.
+conformance:
+- id: openapi
+  conforms: true
+  version: 3.1.0
+  evidence: >-
+    openapi/one-concern-domino-ai-openapi.json, fetched 2026-08-26 from
+    https://developer.oneconcern.com/openapi.json (HTTP 200, application/json). Parses as
+    OpenAPI 3.1.0 with 5 paths, 5 operations, 15 component schemas, unique operationIds, and
+    summaries plus descriptions on every operation.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No components.securitySchemes in the spec. The docs specify key-based auth via the
+    x-1c-api-token header. /.well-known/oauth-authorization-server returns 404 on
+    api.oneconcern.com and oneconcern.com.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on api.oneconcern.com and oneconcern.com.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    Errors are application/json, not application/problem+json. Two envelopes are in use —
+    {"error": "..."} at the gateway and the FastAPI {"detail": [...]} shape declared as
+    HTTPValidationError. Neither carries type/title/status/detail/instance.
+- id: rfc8594
+  conforms: false
+  evidence: No Sunset or Deprecation headers documented or declared; see lifecycle/one-concern-lifecycle.yml.
+- id: idempotency
+  conforms: na
+  evidence: >-
+    Read-only surface. All five operations are queries expressed as POST; there is no create,
+    update or delete to make idempotent. See conventions/one-concern-conventions.yml.
+- id: pagination
+  conforms: na
+  evidence: >-
+    No collection endpoints. Each operation returns exactly one result object for one
+    latitude/longitude pair.
+- id: rate-limit-headers
+  conforms: false
+  evidence: >-
+    No RateLimit-* or X-RateLimit-* headers documented, and no 429 response declared on any
+    operation. See rate-limits/one-concern-rate-limits.yml.
+- id: json-schema-2020-12
+  conforms: true
+  evidence: >-
+    OpenAPI 3.1.0 uses JSON Schema 2020-12 for components.schemas by specification. The document
+    uses 2020-12 constructs (examples arrays rather than the 3.0 example keyword, allOf-wrapped
+    $ref with sibling annotations).
+- id: https-only
+  conforms: true
+  evidence: >-
+    "All API requests must be made over HTTPS. Calls made over plain HTTP will fail." Live probe
+    confirms HTTP/2 over TLSv1.3 at api.oneconcern.com.
+- id: well-known-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404 on oneconcern.com and api.oneconcern.com.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return 404 on oneconcern.com and
+    api.oneconcern.com; the developer portal soft-404s both with an 87-byte HTML shell.
+domain_standards:
+  market: physical climate risk / catastrophe modeling analytics for insurance and financial services
+  searched:
+  - standard: OGC API - Features / OGC API - EDR
+    relevance: geospatial query interfaces used across environmental-data APIs
+    conforms: false
+    evidence: >-
+      The contract is a bespoke POST-a-JSON-query design with no OGC collections, no /conformance
+      endpoint, no CQL filtering, and no OGC media types. Coordinates are plain latitude/longitude
+      numbers rather than a GeoJSON geometry.
+  - standard: GeoJSON (RFC 7946)
+    conforms: false
+    evidence: >-
+      Requests take latitude and longitude as separate numbers; responses return an opaque
+      building id with scalar statistics. No Feature, FeatureCollection, or geometry object
+      appears anywhere in components.schemas.
+  - standard: OASIS Open Exposure Data (OED) / ACORD
+    relevance: the insurance-industry exchange formats for exposure and catastrophe results
+    conforms: false
+    evidence: >-
+      No OED location/account schema, no ACORD message type, and no ACORD or OED identifiers in
+      the contract, despite insurers and reinsurers being the stated buyer on
+      https://oneconcern.com/en/products/dna/.
+  finding: >-
+    REWARD-ONLY, and no reward is due here. One Concern's market does have exchange standards —
+    OASIS OED and ACORD on the insurance side, OGC on the geospatial side — and the Domino AI
+    contract declares none of them. That is a real integration cost for the buyer it targets: a
+    reinsurer with an OED exposure file must write a bespoke connector to score it, one location
+    at a time. Recorded as an honest absence, not invented conformance.
+certifications:
+  published: []
+  note: >-
+    No trust center, no SOC 2 / ISO 27001 / HIPAA / FedRAMP claim, and no compliance page was
+    found on oneconcern.com or the developer portal. trust.oneconcern.com does not resolve. No
+    Compliance pointer is emitted.

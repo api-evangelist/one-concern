@@ -1,0 +1,102 @@
+generated: '2026-08-26'
+method: probed
+source: 'Direct HTTP probes of /.well-known/* on every One Concern host known to this profile'
+name: One Concern Well-Known Document Probe
+description: >-
+  Probe of the RFC 8615 /.well-known/ namespace on the One Concern marketing host, the
+  Domino AI developer portal host, and the Domino AI API host. Nothing was served. The
+  developer portal answers HTTP 200 for every unknown path with an 87-byte HTML
+  meta-refresh shell (an Astro static-site catch-all), so those 200s are recorded as
+  soft-404 misses, not documents. No WellKnown or SecurityTxt pointer is emitted.
+hosts:
+- host: oneconcern.com
+  note: WordPress marketing site; every /.well-known/ path returns a real 404 page.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: developer.oneconcern.com
+  note: >-
+    Astro static developer portal behind Cloudflare. Every unknown path returns HTTP 200
+    with an identical 87-byte HTML meta-refresh document, including /llms.txt. Treated as
+    a soft-404 on every path — a 200 returning an HTML shell is not a well-known document.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    body: soft-404 HTML shell (87 bytes, meta refresh) — not a document
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    body: soft-404 HTML shell (87 bytes, meta refresh) — not a document
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    body: soft-404 HTML shell (87 bytes, meta refresh) — not a document
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    body: soft-404 HTML shell (87 bytes, meta refresh) — not a document
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: null
+    body: soft-404 HTML shell (87 bytes, meta refresh) — not a document
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: null
+    body: soft-404 HTML shell (87 bytes, meta refresh) — not a document
+  - path: /.well-known/agent.json
+    status: 200
+    file: null
+    body: soft-404 HTML shell (87 bytes, meta refresh) — not a document
+- host: api.oneconcern.com
+  note: >-
+    Tyk API gateway (x-generator: tyk.io) behind Cloudflare. Unknown paths return a real
+    404 with a 9-byte text/plain body; documented operation paths return 401.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+summary:
+  hosts_probed: 3
+  documents_found: 0
+  security_txt: false
+  api_catalog: false
+  agent_card: false
+  checked: '2026-08-26'

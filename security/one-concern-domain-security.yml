@@ -1,0 +1,31 @@
+generated: '2026-08-26'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: oneconcern.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 21 01:57:15 2026 GMT
+  hsts: false
+- host: developer.oneconcern.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov  4 20:26:14 2026 GMT
+  hsts: false
+- host: api.oneconcern.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 21 01:57:15 2026 GMT
+  hsts: null
+domains:
+- domain: oneconcern.com
+  dnssec: true
+  caa:
+  - 0 issue "letsencrypt.org"
+  - 0 issue "pki.goog; cansignhttpexchanges=yes"
+  - 0 issue "ssl.com"
+  - 0 issuewild "comodoca.com"
+  - 0 issuewild "digicert.com; cansignhttpexchanges=yes"
+  - 0 issuewild "letsencrypt.org"
+  spf: true
+  dmarc: false

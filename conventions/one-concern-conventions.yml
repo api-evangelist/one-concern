@@ -1,0 +1,139 @@
+generated: '2026-08-26'
+method: searched
+source: https://developer.oneconcern.com/overview
+docs: https://developer.oneconcern.com/overview
+name: One Concern Domino AI API Conventions
+description: >-
+  Cross-cutting runtime semantics for the Domino AI API, read from One Concern's own
+  documentation and derived from the published OpenAPI 3.1.0 contract
+  (openapi/one-concern-domino-ai-openapi.json, v1.31.2).
+style:
+  architecture: REST over HTTPS, JSON in and JSON out
+  quote: >-
+    "The OneConcern Domino AI APIs are organized around REST. The APIs have predictable
+    resource-oriented URLs, accept JSON-encoded request bodies, return JSON-encoded responses,
+    and use standard HTTP response codes and API tokens to authenticate requests."
+  method_use: >-
+    All five operations are POST even though every one of them is a pure read. The request
+    body is a query — latitude, longitude, peril, climate scenario, return period — not a
+    resource to create. This is a query-by-POST API with no write surface.
+  base_url: https://api.oneconcern.com
+  base_url_provenance: >-
+    Not published in the docs and absent from the OpenAPI (no servers[] block). Established by
+    probe: documented operation paths on api.oneconcern.com return 401 with
+    {"error": "Authorization field missing"} while undocumented paths on the same host return 404.
+authentication:
+  style: api-key header
+  header: x-1c-api-token
+  see: authentication/one-concern-authentication.yml
+idempotency:
+  supported: na
+  header: null
+  grade: na
+  rationale: >-
+    Every operation is a read expressed as a POST. There is nothing to double-create, so an
+    idempotency key has no work to do and its absence is not a gap. The optional transaction-id
+    header gives the caller a way to correlate a retried call in One Concern's billing report,
+    but it is explicitly a tracing/billing identifier, not a de-duplication key, and the docs
+    make no replay guarantee about it.
+  retry_safety: >-
+    Safe to retry. Repeating an identical request returns the same analytic result for the same
+    data version; the only side effect is a metered API call.
+reversibility:
+  supported: na
+  grade: na
+  rationale: >-
+    The API has no write surface. There is no create, update, delete, charge, cancel, or any
+    other state-changing operation across the five published paths, so there is nothing for an
+    agent to take back. Recorded na rather than zero.
+  write_operations: []
+  reversal_operations: []
+dry_run_mode:
+  supported: na
+  rationale: >-
+    Read-only surface; a rehearsal mode has no meaning. One Concern publishes no sandbox or
+    test-mode tokens either (see the sandbox note below).
+pagination:
+  supported: na
+  rationale: >-
+    Each operation takes exactly one latitude/longitude pair and returns exactly one result
+    object. There is no collection endpoint, no list, no cursor and no offset in the contract.
+  note: >-
+    This is the largest structural gap in the API for a portfolio use case — an insurer scoring
+    ten thousand locations must make ten thousand round trips. No batch or bulk operation is
+    published.
+field_expansion:
+  supported: false
+  note: >-
+    Response shaping is done through request enums instead — interruption_type, peril,
+    climate_change and return_period_yrs/planning_horizon_yrs select which slice of the model
+    is computed. The docs frame this explicitly as payload reduction: "designed to support
+    calculation option to better target the use case and reduce the payload size of data across
+    the network."
+metadata:
+  supported: false
+  note: >-
+    No customer-defined metadata on requests. The client-id header is the only caller-supplied
+    label that One Concern stores and reports back.
+request_tracing:
+  supported: true
+  header: transaction-id
+  direction: request
+  description: >-
+    Optional caller-generated identifier, echoed into One Concern's billing reports on request.
+    There is no server-generated request id in the response headers.
+versioning:
+  url_versioning: true
+  url_pattern: /v1/...
+  contract_version: v1.31.2
+  response_headers:
+  - header: x-1c-api-version
+    format: vX.Y.Z
+    meaning: Released version of the API code that produced the metrics
+  - header: x-1c-data-version
+    format: vUS.X.Y.Z
+    meaning: Version of the underlying dataset the metrics were computed from
+  policy: >-
+    "Developers should expect that most backwards compatible changes to the API contract or
+    metrics will result in no change to the API endpoints, instead simply resulting in a change
+    to the x-1c-api-version returned in the header." Model changes are communicated through
+    customer success rather than a public changelog.
+  agent_note: >-
+    The two-header split — code version and data version, separately — is unusually good
+    practice for an analytics API and is the single most agent-useful convention One Concern
+    publishes. It lets a consumer pin an audit trail to the exact model and dataset that
+    produced a number. One Concern recommends customers record it: "track the version
+    information returned by individual API calls for use cases that require an audit trail."
+error_envelope:
+  shape: non-standard
+  formats:
+  - context: gateway (auth) errors
+    body: '{"error": "<message>"}'
+    observed: 'HTTP 401 {"error": "Authorization field missing"}'
+  - context: application validation errors
+    body: '{"detail": [{"loc": [...], "msg": "...", "type": "..."}]}'
+    schema: '#/components/schemas/HTTPValidationError'
+    note: FastAPI/Pydantic default validation envelope, declared in the OpenAPI on all five operations
+  rfc9457: false
+  see: errors/one-concern-problem-types.yml
+  empty_result_convention:
+    status: 204
+    description: >-
+      "When there is no data for the given latitude and longitude and the request is properly
+      formatted, the API will issue 204 No Content." Declared on all five operations. An agent
+      must treat 204 as a legitimate answer meaning "outside modeled coverage", not as a failure.
+rate_limit_signaling:
+  documented: false
+  headers: []
+  see: rate-limits/one-concern-rate-limits.yml
+sandbox:
+  published: false
+  note: >-
+    No test mode, test token prefix, sandbox host, or fixture coordinates are published. The
+    only way to exercise the API is with a production token from customer success.
+cross_links:
+  authentication: authentication/one-concern-authentication.yml
+  errors: errors/one-concern-problem-types.yml
+  lifecycle: lifecycle/one-concern-lifecycle.yml
+  rate_limits: rate-limits/one-concern-rate-limits.yml
+  data_model: data-model/one-concern-data-model.yml

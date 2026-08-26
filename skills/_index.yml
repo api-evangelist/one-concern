@@ -1,0 +1,35 @@
+generated: '2026-08-26'
+method: generated
+source: >-
+  openapi/one-concern-domino-ai-openapi.json (v1.31.2),
+  https://developer.oneconcern.com/overview, https://developer.oneconcern.com/calculation-process
+name: One Concern Agent Skills
+description: >-
+  Packaged agent operating instructions for the One Concern Domino AI API. Every operationId
+  referenced in these skills is verified against the published OpenAPI; every convention,
+  threshold and vocabulary definition is taken from One Concern's own documentation. One Concern
+  publishes no skills or AGENTS.md of its own — these are API Evangelist generations.
+api: One Concern Domino AI API
+skills:
+- name: score-location-business-interruption
+  file: skills/one-concern-score-location-business-interruption.md
+  description: >-
+    Score the business-interruption (downtime) risk of a single location, choosing between the
+    return-period, average-annual and planning-horizon operations, and handling the 204
+    coverage answer and the split peril enumeration.
+  operations:
+  - Business_Interruption_Risk_Scores_By_Return_Period_v1_location_business_interruption_return_period_post
+  - Business_Interruption_Risk_Scores_By_Average_Annual_Downtime_v1_location_business_interruption_average_annual_post
+  - BI_Risk_Score_By_Planning_Horizon_v1_location_business_interruption_planning_horizon_post
+- name: compare-property-damage-scenarios
+  file: skills/one-concern-compare-property-damage-scenarios.md
+  description: >-
+    Sweep property-damage ratios across return periods and climate scenarios for a location, and
+    join them to the business-interruption view without conflating the two measures.
+  operations:
+  - Property_Damage_Ratio_By_Return_Period_v1_location_property_damage_return_period_post
+  - Property_Damage_Ratio_By_Average_Annual_Downtime_v1_location_property_damage_average_annual_post
+  - Business_Interruption_Risk_Scores_By_Return_Period_v1_location_business_interruption_return_period_post
+coverage:
+  operations_in_spec: 5
+  operations_covered: 5

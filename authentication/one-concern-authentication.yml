@@ -1,0 +1,78 @@
+generated: '2026-08-26'
+method: searched
+source: https://developer.oneconcern.com/overview
+docs: https://developer.oneconcern.com/overview
+name: One Concern Domino AI API Authentication
+description: >-
+  The Domino AI API uses key-based authentication with a customer-issued token carried in a
+  vendor-specific request header. There is no OAuth 2.0, no OpenID Connect, no mTLS and no
+  self-service credential issuance: tokens are obtained by contacting One Concern customer
+  success. A second header, client-id, is required on every call and is used for billing
+  attribution rather than authentication.
+  IMPORTANT PROVENANCE NOTE: the published OpenAPI (openapi/one-concern-domino-ai-openapi.json,
+  Domino AI API v1.31.2) declares NO components.securitySchemes and NO security requirement on
+  any operation, so the derive-from-spec path yields nothing. Everything below is read from the
+  provider's own documentation prose and confirmed against a live unauthenticated request.
+schemes:
+- id: api-token
+  type: apiKey
+  in: header
+  name: x-1c-api-token
+  required: true
+  description: >-
+    Customer-issued API token. One Concern states that a given token may authorize only a
+    subset of the endpoints in the spec, so the published contract describes the full product
+    surface rather than any one customer's entitlement.
+  issuance: >-
+    Manual. "API tokens can be obtained by contacting the One Concern customer success team."
+    No sign-up, developer console, or self-service key page exists.
+  rotation: not documented
+  scopes: none — the API has no scope surface
+  declared_in_openapi: false
+- id: client-id
+  type: apiKey
+  in: header
+  name: client-id
+  required: true
+  description: >-
+    Required on every operation and declared in the OpenAPI as a required header parameter on
+    all five operations. Not a credential — the value "can be anything meaningful to each
+    customer" and is used so One Concern can break down API call volume by group for billing.
+  declared_in_openapi: true
+- id: transaction-id
+  type: apiKey
+  in: header
+  name: transaction-id
+  required: false
+  description: >-
+    Optional per-call tracing identifier chosen by the caller; returned in One Concern billing
+    reports on request. Declared in the OpenAPI as an optional header parameter.
+  declared_in_openapi: true
+transport:
+  https_required: true
+  note: >-
+    "All API requests must be made over HTTPS. Calls made over plain HTTP will fail." Confirmed:
+    api.oneconcern.com serves HTTP/2 over TLSv1.3.
+oauth2: false
+openid_connect: false
+mutual_tls: false
+signed_requests: false
+verification:
+  method: probed
+  fetched: '2026-08-26'
+  request: >-
+    POST https://api.oneconcern.com/v1/location/business-interruption/return-period with
+    client-id and a JSON body, no x-1c-api-token
+  http_status: 401
+  response_body: '{"error": "Authorization field missing"}'
+  gateway: 'x-generator: tyk.io'
+  note: >-
+    An undocumented path on the same host returns 404, so the 401 confirms both that
+    api.oneconcern.com is the real base URL for this contract and that the documented auth
+    model is enforced at the gateway.
+gaps:
+- The OpenAPI declares no securitySchemes, so a generated client or an agent reading only the
+  spec cannot discover that x-1c-api-token is required. Adding an apiKey scheme and a global
+  security requirement would be a one-line fix with a large agent-readability payoff.
+- No documented token rotation, expiry, or revocation procedure.
+- No self-service credential path; every integration begins with a sales conversation.

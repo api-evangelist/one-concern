@@ -1,0 +1,174 @@
+generated: '2026-08-26'
+method: derived
+source: openapi/one-concern-domino-ai-openapi.json
+name: One Concern Domino AI Data Model
+description: >-
+  Entity and vocabulary model derived from the 15 component schemas of the Domino AI API
+  (v1.31.2). The contract is deliberately flat: there are no nested resources, no links between
+  objects, and no identifiers that reference another entity. What carries the domain meaning is
+  the enumerated vocabulary — peril, interruption type, climate scenario, return period, planning
+  horizon — not a relational graph. Definitions below are taken from One Concern's calculation
+  process documentation (https://developer.oneconcern.com/calculation-process).
+entities:
+- name: BIRiskScoreRequestRP
+  kind: request
+  description: Business-interruption risk query for a single location at a fixed return period.
+  fields:
+  - {name: latitude, type: number, required: true, range: -90..90}
+  - {name: longitude, type: number, required: true, range: -180..180}
+  - {name: max_distance_m, type: number, required: false, default: 500, units: metres, range: 1.0..500.0}
+  - {name: interruption_type, type: enum, required: true, ref: BusinessInterruptionType}
+  - {name: climate_change, type: enum, required: true, ref: ClimateChange}
+  - {name: return_period_yrs, type: enum, required: true, ref: ReturnPeriod}
+  - {name: peril, type: enum, required: true, ref: PerilRP}
+- name: BIRiskScoreRequestAA
+  kind: request
+  description: Business-interruption risk query annualised across all return periods.
+  fields:
+  - {name: latitude, type: number, required: true}
+  - {name: longitude, type: number, required: true}
+  - {name: max_distance_m, type: number, required: false, default: 500}
+  - {name: interruption_type, type: enum, required: true, ref: BusinessInterruptionType}
+  - {name: climate_change, type: enum, required: true, ref: ClimateChange}
+  - {name: peril, type: enum, required: true, ref: PerilAA}
+- name: BIRiskScoreRequestPH
+  kind: request
+  description: Business-interruption risk query over a forward planning horizon in years.
+  fields:
+  - {name: latitude, type: number, required: true}
+  - {name: longitude, type: number, required: true}
+  - {name: max_distance_m, type: number, required: false, default: 500}
+  - {name: interruption_type, type: enum, required: true, ref: BusinessInterruptionType}
+  - {name: climate_change, type: enum, required: true, ref: ClimateChange}
+  - {name: planning_horizon_yrs, type: enum, required: true, ref: PlanningHorizon}
+  - {name: peril, type: enum, required: true, ref: PerilAA}
+- name: BIRiskScoreResponse
+  kind: response
+  description: Downtime statistics and a risk band for the closest modeled building.
+  fields:
+  - {name: id, type: string, format: uuid, required: true, description: One Concern unique building ID}
+  - {name: downtime_avg_days, type: number, required: true, units: days, description: mean downtime}
+  - {name: downtime_stdev_days, type: number, required: true, units: days, description: standard deviation of downtime}
+  - {name: score, type: string, required: true, values: [low, med, high], description: business interruption risk band}
+  binning:
+    source: https://developer.oneconcern.com/calculation-process
+    rules:
+    - high risk when downtime >= 7 days
+    - medium risk when downtime < 7 days and >= 2 days
+    - low risk when downtime < 2 days
+    note: >-
+      For the average-annual calculation the bins are applied to
+      (downtime_avg_days + 2 * downtime_stdev_days), not to the mean alone.
+- name: PropertyDamageRequestRP
+  kind: request
+  description: Property-damage query for a single location at a fixed return period.
+  fields:
+  - {name: latitude, type: number, required: true}
+  - {name: longitude, type: number, required: true}
+  - {name: max_distance_m, type: number, required: false, default: 500}
+  - {name: peril, type: enum, required: true, ref: PerilRP}
+  - {name: climate_change, type: enum, required: true, ref: ClimateChange}
+  - {name: return_period_yrs, type: enum, required: true, ref: ReturnPeriod}
+- name: PropertyDamageRequestAA
+  kind: request
+  description: Property-damage query annualised across all return periods.
+  fields:
+  - {name: latitude, type: number, required: true}
+  - {name: longitude, type: number, required: true}
+  - {name: max_distance_m, type: number, required: false, default: 500}
+  - {name: peril, type: enum, required: true, ref: PerilAA}
+  - {name: climate_change, type: enum, required: true, ref: ClimateChange}
+- name: PropertyDamageResponse
+  kind: response
+  description: Direct structural damage ratio for the closest modeled building.
+  fields:
+  - {name: id, type: string, format: uuid, required: true}
+  - {name: damage_ratio_avg, type: number, required: true, description: mean direct structural impact of the hazard}
+  - {name: damage_ratio_stdev, type: number, required: true}
+- name: HTTPValidationError
+  kind: error
+  fields:
+  - {name: detail, type: array, items: ValidationError}
+- name: ValidationError
+  kind: error
+  fields:
+  - {name: loc, type: array, required: true}
+  - {name: msg, type: string, required: true}
+  - {name: type, type: string, required: true}
+vocabularies:
+- name: PerilRP
+  type: string
+  values: [flood, wind, seismic]
+  used_by: [BIRiskScoreRequestRP, PropertyDamageRequestRP]
+  definitions:
+    flood: inland and coastal flooding
+    wind: tropical cyclone wind
+    seismic: earthquake ground-shaking
+- name: PerilAA
+  type: string
+  values: [flood, integrated, wind, seismic]
+  used_by: [BIRiskScoreRequestAA, BIRiskScoreRequestPH, PropertyDamageRequestAA]
+  note: >-
+    The two peril enumerations differ — `integrated` (all perils combined) is available on the
+    average-annual and planning-horizon operations but NOT on the return-period operations. This
+    is the single most common source of a 422 and is easy to miss because both enums are called
+    "peril" in the request body.
+- name: BusinessInterruptionType
+  type: string
+  values: [integrated, utility, ingress_egress, community, repair_time, ports, airports, bridges, highways]
+  definitions:
+    ingress_egress: ports, airports, roads, bridges
+    community: residential community only
+    utility: power distribution network only
+    repair_time: building structural downtime
+    integrated: all of the above
+  note: >-
+    The spec exposes four finer-grained lifeline values (ports, airports, bridges, highways) that
+    the calculation-process page does not describe; the docs describe only the five coarse
+    dependencies. One Concern also warns that "different countries and peril combinations may
+    support different dependencies", so a value being in the enum does not guarantee coverage for
+    a given location — expect 204 rather than an error.
+- name: ClimateChange
+  type: string
+  values: [ccbaseline, cc2050_45]
+  definitions:
+    ccbaseline: baseline climate view
+    cc2050_45: RCP 4.5 or equivalent SSP view for 2050 projection year
+- name: ReturnPeriod
+  type: integer
+  values: [50, 100, 250, 500, 1000]
+  units: years
+  note: >-
+    A 100-year return period is a 1% annual exceedance probability; a 250-year return period is
+    0.4%.
+- name: PlanningHorizon
+  type: integer
+  values: [1, 5, 10, 20, 30]
+  units: years
+relationships:
+- from: BIRiskScoreResponse
+  to: PropertyDamageResponse
+  type: shared_identifier
+  via: id
+  confidence: medium
+  note: >-
+    Both responses return `id`, documented identically as the One Concern unique building ID
+    (UUID). The contract does not state that the same coordinates resolve to the same id across
+    the two products, and there is no lookup operation that accepts an id, so this is an
+    inferred join key rather than a declared foreign key. There is no endpoint that resolves an
+    id back to a building.
+- from: request
+  to: response
+  type: spatial_snap
+  via: latitude + longitude + max_distance_m
+  confidence: high
+  note: >-
+    The API resolves a coordinate to "the closest building location to the requested specified
+    latitude and longitude" within max_distance_m. The returned id is therefore the model's
+    choice of building, not the caller's — two nearby coordinates can return the same id, and a
+    coordinate with no building inside the tolerance returns 204.
+graph_notes: >-
+  There are no has_one/has_many relationships to draw. This is an analytic function API, not a
+  resource API: coordinates and modelling options go in, statistics come out, and nothing is
+  stored or referenced. The absence of any id-taking operation means an agent cannot navigate
+  from a result to anything else.

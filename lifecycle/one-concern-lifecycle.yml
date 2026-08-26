@@ -1,0 +1,70 @@
+generated: '2026-08-26'
+method: searched
+source: https://developer.oneconcern.com/overview
+docs: https://developer.oneconcern.com/overview
+name: One Concern Domino AI API Lifecycle
+description: >-
+  Versioning, change communication and operational-transparency posture for the Domino AI API,
+  read from One Concern's own documentation and confirmed against the published OpenAPI.
+versioning:
+  scheme: url-major + semantic build version + separate data version
+  url_prefix: /v1
+  contract_version: v1.31.2
+  source: openapi/one-concern-domino-ai-openapi.json info.version
+  runtime_headers:
+  - header: x-1c-api-version
+    format: vX.Y.Z
+    meaning: released version of the API code returning the metrics
+  - header: x-1c-data-version
+    format: vUS.X.Y.Z
+    meaning: version of the dataset the API consumed to create the metrics
+  policy_quote: >-
+    "Developers should expect that most backwards compatible changes to the API contract or
+    metrics will result in no change to the API endpoints, instead simply resulting in a change
+    to the x-1c-api-version returned in the header. Similarly, most data updates will not result
+    in changes to the endpoints, just a change to the x-1c-data-version returned in the header."
+  model_change_communication: >-
+    "Generally, when significant improvements are made from a modeling point of view, customers
+    will be notified of this through the customer success team." Model changes are therefore
+    announced privately, not published.
+  audit_guidance: >-
+    One Concern explicitly recommends that customers record the returned version headers "for use
+    cases that require an audit trail of data used in their applications." For a regulated
+    insurance or capital-markets consumer this is the reproducibility contract.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: >-
+    No deprecation policy, no notice window, no Sunset or Deprecation response headers, and no
+    operation marked deprecated: true in the OpenAPI. Nothing in the contract or docs tells a
+    consumer how much warning they would get before an endpoint or a modeling behaviour changes.
+status_page:
+  published: false
+  probed:
+  - url: https://status.oneconcern.com
+    status: '<no response> (DNS/connection failure)'
+  note: >-
+    No status page found. status.oneconcern.com does not resolve to a reachable host, and neither
+    the marketing site nor the developer portal links to a third-party status page.
+sla:
+  published: false
+  note: No public SLA, uptime commitment, or support-response target.
+changelog:
+  published: false
+  note: >-
+    No dated changelog exists. The only version signal a consumer can observe is the pair of
+    response headers and the info.version string in the OpenAPI. No changelog/ artifact is
+    emitted for this provider because there is nothing dated to structure.
+maturity:
+  stage: production
+  evidence: >-
+    v1 URL prefix, v1.31.2 build version, a commercial gateway (Tyk) enforcing tokens, and
+    billing attribution headers — this is a live, metered, revenue-bearing API, not a preview.
+gaps:
+- No status page (no StatusPage pointer emitted).
+- No deprecation policy (no Deprecation pointer emitted).
+- No public changelog or release notes.
+- No SLA.

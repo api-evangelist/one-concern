@@ -1,0 +1,150 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the One Concern Domino AI API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-26'
+  method: generated
+  source: openapi/one-concern-domino-ai-openapi.json
+  extends: openapi/one-concern-domino-ai-openapi.json
+  note: >-
+    Captures API Evangelist enhancements to the One Concern Domino AI API v1.31.2 as fetched
+    verbatim from https://developer.oneconcern.com/openapi.json on 2026-08-26. The original spec
+    is never mutated. Every value added here is taken from One Concern's own published
+    documentation (https://developer.oneconcern.com/overview and /calculation-process) or from a
+    live probe of api.oneconcern.com; nothing is invented.
+actions:
+- target: $
+  description: >-
+    Add the production server. The published spec has no servers[] block. api.oneconcern.com is
+    established by probe — documented operation paths return 401 with
+    {"error":"Authorization field missing"} while undocumented paths on the same host return 404.
+  update:
+    servers:
+    - url: https://api.oneconcern.com
+      description: Production (Tyk gateway; HTTPS only)
+- target: $.info
+  description: >-
+    Replace the placeholder one-word description and add contact/licence-adjacent metadata that
+    the provider publishes elsewhere.
+  update:
+    description: >-
+      The One Concern Domino AI API quantifies physical risk to a specific location from
+      catastrophes that damage the property itself and disrupt the infrastructure networks its
+      normal operations depend on. Five POST operations return business-interruption downtime
+      statistics and property-damage ratios for the closest modeled building to a supplied
+      latitude/longitude, selectable by peril, climate scenario, and either return period,
+      average annual downtime, or forward planning horizon.
+    contact:
+      name: One Concern Customer Success
+      url: https://oneconcern.com/en/contact/
+    termsOfService: https://oneconcern.com/en/terms/
+- target: $
+  description: >-
+    Declare the authentication scheme the docs specify. The published spec has no
+    components.securitySchemes at all, so a generated client cannot discover that a token is
+    required.
+  update:
+    components:
+      securitySchemes:
+        ApiTokenAuth:
+          type: apiKey
+          in: header
+          name: x-1c-api-token
+          description: >-
+            Customer-issued API token, obtained from the One Concern customer success team. A
+            token may authorize only a subset of the endpoints in this specification.
+    security:
+    - ApiTokenAuth: []
+- target: $.paths.*.post.responses
+  description: >-
+    Declare the 401 response documented in the Errors section of the developer portal but absent
+    from every operation in the published spec.
+  update:
+    '401':
+      description: >-
+        Unauthorized. The API token is missing, invalid, or not entitled to this endpoint.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Human-readable gateway error message.
+            examples:
+            - error: Authorization field missing
+- target: $.paths.*.post.responses.204
+  description: >-
+    Clarify that 204 is a modelled-coverage answer rather than a failure — the single most
+    likely runtime surprise for a consumer of this API.
+  update:
+    description: >-
+      No Content. The request was well formed and authorized, but One Concern has no modeled
+      building within max_distance_m of the supplied coordinates. This is a valid answer, not an
+      error; do not retry unchanged. Widening max_distance_m (maximum 500 metres) may resolve it.
+- target: $.paths['/v1/location/business-interruption/return-period'].post
+  description: Tag the operation. The published spec declares no tags anywhere.
+  update:
+    tags: [Business Interruption]
+- target: $.paths['/v1/location/business-interruption/average-annual'].post
+  update:
+    tags: [Business Interruption]
+- target: $.paths['/v1/location/business-interruption/planning-horizon'].post
+  update:
+    tags: [Business Interruption]
+- target: $.paths['/v1/location/property-damage/return-period'].post
+  update:
+    tags: [Property Damage]
+- target: $.paths['/v1/location/property-damage/average-annual'].post
+  update:
+    tags: [Property Damage]
+- target: $
+  description: Declare the two tag groups added above.
+  update:
+    tags:
+    - name: Business Interruption
+      description: >-
+        Downtime statistics and risk bands for a location, accounting for the building and the
+        lifelines it depends on.
+    - name: Property Damage
+      description: Direct structural damage ratios for a location.
+- target: $.components.schemas.PerilRP
+  description: >-
+    Record the peril definitions from the calculation-process documentation, and flag the
+    divergence from PerilAA that is the most common cause of a 422.
+  update:
+    description: >-
+      Cause of loss or damage. flood = inland and coastal flooding; wind = tropical cyclone wind;
+      seismic = earthquake ground-shaking. Note that `integrated` is NOT accepted on return-period
+      operations, although it is accepted on average-annual and planning-horizon operations.
+- target: $.components.schemas.PerilAA
+  update:
+    description: >-
+      Cause of loss or damage. flood = inland and coastal flooding; wind = tropical cyclone wind;
+      seismic = earthquake ground-shaking; integrated = all perils combined.
+- target: $.components.schemas.BusinessInterruptionType
+  update:
+    description: >-
+      The component of infrastructure essential to recovery. ingress_egress = ports, airports,
+      roads and bridges; community = residential community only; utility = power distribution
+      network only; repair_time = building structural downtime; integrated = all of the above.
+      Different countries and peril combinations support different dependencies, so an accepted
+      enum value may still return 204 for a given location.
+- target: $.components.schemas.ClimateChange
+  update:
+    description: >-
+      Climate change scenario. ccbaseline = baseline climate view; cc2050_45 = RCP 4.5 or
+      equivalent SSP view for the 2050 projection year.
+- target: $.components.schemas.ReturnPeriod
+  update:
+    description: >-
+      Return period in years. A 100-year return period is probabilistically equivalent to a 1%
+      chance of occurrence in any given year; a 250-year return period to 0.4%.
+- target: $.components.schemas.BIRiskScoreResponse.properties.score
+  update:
+    description: >-
+      Business interruption risk band. high when downtime >= 7 days, med when downtime < 7 and
+      >= 2 days, low when downtime < 2 days. For the average-annual operation the bins are
+      applied to (downtime_avg_days + 2 * downtime_stdev_days).
+    enum: [low, med, high]

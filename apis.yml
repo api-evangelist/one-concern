@@ -1,18 +1,94 @@
 aid: one-concern
 name: One Concern
-description: 'One Concern is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  One Concern is a Palo Alto, California climate-resilience analytics company that builds a
+  digital twin of the built environment to quantify physical climate and natural-catastrophe
+  risk in units of time rather than broad-brush hazard bands. Its Domino AI platform models
+  the recovery of an individual building together with the lifelines it depends on — power
+  distribution, ports, airports, roads and bridges, the surrounding residential community —
+  and returns business-interruption downtime statistics, property-damage ratios and a 1CRX
+  resilience score for a given latitude and longitude, per peril (flood, tropical-cyclone
+  wind, seismic ground shaking, or all perils integrated), per return period or planning
+  horizon, and under baseline or 2050 climate-change scenarios. The company sells to
+  insurers, reinsurers, financial services and real estate, and exposes the platform to
+  customers through the Domino AI API, a five-operation REST contract documented at
+  developer.oneconcern.com and served from api.oneconcern.com behind a Tyk gateway with a
+  customer-issued x-1c-api-token header.
+image: https://oneconcern.com/wp-content/uploads/2021/10/One-Concern-Logo.png
 url: https://raw.githubusercontent.com/api-evangelist/one-concern/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-26'
 modified: '2026-08-26'
 tags:
-- Company
-apis: []
+- Climate Risk
+- Catastrophe Modeling
+- Resilience
+- Insurance
+- Reinsurance
+- Risk Analytics
+- Geospatial
+- Business Interruption
+- Real Estate
+- Financial Services
+- Artificial Intelligence
+apis:
+- aid: one-concern-domino-ai-api
+  name: One Concern Domino AI API
+  description: >-
+    The Domino AI API returns One Concern's location-based physical-risk analytics for a
+    single latitude/longitude. Five POST operations cover business-interruption risk scores
+    by return period, by average annual downtime and by planning horizon, and property-damage
+    ratios by return period and by average annual downtime. Every request selects a peril
+    (flood, wind, seismic, integrated), a climate-change scenario (ccbaseline or cc2050_45),
+    and for business interruption an interruption type (integrated, utility, ingress_egress,
+    community, repair_time, ports, airports, bridges, highways). Responses carry the One
+    Concern building id, the mean and standard deviation of downtime in days (or the damage
+    ratio and its standard deviation) and a low/med/high risk label. Authentication is a
+    customer-issued API token in the x-1c-api-token header plus a required client-id header
+    used for billing attribution; an optional transaction-id header supports per-call
+    tracing. Version provenance is returned on every response as x-1c-api-version and
+    x-1c-data-version.
+  humanURL: https://developer.oneconcern.com/overview
+  baseURL: https://api.oneconcern.com
+  tags:
+  - Climate Risk
+  - Business Interruption
+  - Property Damage
+  - Catastrophe Modeling
+  - Geospatial
+  properties:
+  - type: OpenAPI
+    url: openapi/one-concern-domino-ai-openapi.json
+  - type: Documentation
+    url: https://developer.oneconcern.com/overview
+  - type: APIReference
+    url: https://developer.oneconcern.com/api-spec
+  - type: GettingStarted
+    url: https://developer.oneconcern.com/overview
+  - type: Authentication
+    url: authentication/one-concern-authentication.yml
+  - type: Conventions
+    url: conventions/one-concern-conventions.yml
+  - type: ErrorCatalog
+    url: errors/one-concern-problem-types.yml
+  - type: DataModel
+    url: data-model/one-concern-data-model.yml
+  - type: Overlay
+    url: overlays/one-concern-domino-ai-overlay.yaml
+  - type: Lifecycle
+    url: lifecycle/one-concern-lifecycle.yml
+  - type: Conformance
+    url: conformance/one-concern-conformance.yml
+  - type: RateLimits
+    url: rate-limits/one-concern-rate-limits.yml
+  - type: Plans
+    url: plans/one-concern-plans-pricing.yml
+  - type: MCPCandidate
+    url: mcp/one-concern-mcp.yml
+  - type: AgentSkill
+    url: skills/_index.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +96,43 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://forgeglobal.com/one-concern_stock/
+  url: https://oneconcern.com/en/
+- type: DeveloperPortal
+  url: https://developer.oneconcern.com/overview
+- type: Documentation
+  url: https://developer.oneconcern.com/overview
+- type: APIReference
+  url: https://developer.oneconcern.com/api-spec
+- type: GettingStarted
+  url: https://developer.oneconcern.com/overview
+- type: Blog
+  url: https://oneconcern.com/en/news/
+- type: BlogRSS
+  url: https://oneconcern.com/feed/
+- type: Support
+  url: https://oneconcern.com/en/contact/
+- type: GitHubOrganization
+  url: https://github.com/oneconcern
+- type: TermsOfService
+  url: https://oneconcern.com/en/terms/
+- type: PrivacyPolicy
+  url: https://oneconcern.com/en/privacy/
+- type: About
+  url: https://oneconcern.com/en/about/
+- type: Products
+  url: https://oneconcern.com/en/products/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/oneconcern/
+- type: Packages
+  url: packages/one-concern-packages.yml
+- type: WellKnownProbe
+  url: well-known/one-concern-well-known.yml
+- type: LLMsTxt
+  url: llms/one-concern-llms.txt
+- type: DomainSecurity
+  url: security/one-concern-domain-security.yml
+x-enrichment:
+  date: '2026-08-26'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1

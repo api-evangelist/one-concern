@@ -1,0 +1,64 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  registry.npmjs.org search, pypi.org, rubygems.org, crates.io, and the GitHub org
+  https://github.com/oneconcern — plus the Domino AI developer portal
+  (https://developer.oneconcern.com/overview), which documents raw HTTPS calls only.
+name: One Concern Client Packages
+description: >-
+  No first-party client library for the One Concern Domino AI API was found in any public
+  package registry. The developer portal documents the API as plain REST over HTTPS with a
+  header-based token and publishes no SDK, no quickstart snippet library, and no package
+  install instructions. The company's GitHub org is public and verified but contains
+  infrastructure forks and research/hazard-model code, not an API client.
+packages: []
+package_count: 0
+official_sdk_count: 0
+registries_searched:
+- registry: npm
+  query: oneconcern
+  endpoint: https://registry.npmjs.org/-/v1/search?text=oneconcern
+  results: 0
+- registry: pypi
+  queries: [oneconcern, one-concern, domino-ai]
+  endpoint: https://pypi.org/pypi/<name>/json
+  results: 0
+  note: all three names return HTTP 404
+- registry: rubygems
+  query: oneconcern
+  endpoint: https://rubygems.org/api/v1/gems/oneconcern.json
+  results: 0
+  note: HTTP 404
+- registry: crates.io
+  query: oneconcern
+  endpoint: https://crates.io/api/v1/crates?q=oneconcern
+  results: 0
+- registry: github
+  query: https://api.github.com/orgs/oneconcern/repos
+  results: 35
+  note: >-
+    Verified org "One Concern" (Palo Alto). The public repos are forks of infrastructure
+    projects (keycloak-gatekeeper, dgraph, postgres-operator, oauth2_proxy) and public
+    hazard-science code (VIC, RAPID, oq-engine, gridfire, RainyDay2, lisflood-code). The
+    one substantive first-party project is `datamon` (Go, data management for ML
+    pipelines, last push 2023-04-07) with a `homebrew-datamon` tap — it is not a client
+    for the Domino AI API and is not counted as an SDK here.
+related_first_party_open_source:
+- name: datamon
+  repo: https://github.com/oneconcern/datamon
+  language: Go
+  description: Datamon manages infinite reflections of data
+  version: null
+  published: null
+  registry: none
+  official: true
+  note: >-
+    First-party One Concern open source, but unrelated to the Domino AI API. No package
+    registry publishes it (Homebrew tap only, https://github.com/oneconcern/homebrew-datamon),
+    so there is no metadata endpoint to read a version or release date from — recorded null,
+    checked.
+finding: >-
+  A consumer integrating the Domino AI API writes the HTTP call themselves. This is a
+  five-operation, single-auth-header API, so the absence of an SDK is a small cost, but it
+  does mean there is no provider-published, dated artifact from which API decay could be
+  inferred.

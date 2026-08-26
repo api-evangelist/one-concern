@@ -1,0 +1,110 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  https://developer.oneconcern.com/overview (Errors section) enriched with
+  openapi/one-concern-domino-ai-openapi.json responses and one live unauthenticated probe of
+  https://api.oneconcern.com/v1/location/business-interruption/return-period
+name: One Concern Domino AI API Error Catalog
+description: >-
+  One Concern documents a conventional HTTP status taxonomy and two distinct JSON error
+  envelopes — a gateway envelope for auth failures and the FastAPI/Pydantic validation envelope
+  declared in the OpenAPI. There is no RFC 9457 problem+json, no vendor error-code registry, and
+  no machine-readable error type identifiers.
+format: non-standard
+rfc9457: false
+content_type: application/json
+envelopes:
+- id: gateway-error
+  shape: '{"error": "<message>"}'
+  applies_to: authorization failures returned by the Tyk gateway before the application is reached
+  evidence:
+    probed: '2026-08-26'
+    url: https://api.oneconcern.com/v1/location/business-interruption/return-period
+    http_status: 401
+    body: '{"error": "Authorization field missing"}'
+    server_header: 'x-generator: tyk.io'
+  declared_in_openapi: false
+- id: validation-error
+  shape: '{"detail": [{"loc": ["body", "<field>"], "msg": "<message>", "type": "<pydantic type>"}]}'
+  applies_to: request bodies that fail schema validation
+  schema: '#/components/schemas/HTTPValidationError'
+  declared_in_openapi: true
+  note: >-
+    ValidationError requires loc (array of string|integer), msg (string) and type (string). The
+    docs give a real example message — "value is not a valid enumeration member; permitted:
+    'flood', 'wind', 'seismic'" — which is the highest-value error text in the API because it
+    enumerates the accepted values inline.
+problem_types:
+- status: 200
+  title: Successful Response
+  description: Analytic result returned for the requested location.
+  source: openapi
+  operations: all
+- status: 204
+  title: No Content — no data for this location
+  description: >-
+    The request was well formed and authorized, but One Concern has no modeled building within
+    max_distance_m of the supplied latitude/longitude. This is a legitimate answer, not a
+    failure.
+  remediation: >-
+    Increase max_distance_m (valid range 1.0 to 500.0 metres) or accept that the location is
+    outside the modeled coverage. Do not retry unchanged.
+  agent_guidance: >-
+    An agent must branch on 204 explicitly. The body is empty, so code that assumes a JSON
+    response on any 2xx will throw here. This is the most likely runtime surprise in the API.
+  source: openapi + docs
+  operations: all
+- status: 401
+  title: Unauthorized
+  description: >-
+    Missing or unauthorized API token. Also returned when the token is valid but not entitled to
+    the specific endpoint — One Concern issues tokens scoped to a subset of the published
+    contract.
+  envelope: gateway-error
+  observed_message: Authorization field missing
+  remediation: >-
+    Supply x-1c-api-token. If already supplied, One Concern directs the caller to "check with our
+    customer success team to make sure you have a valid API token for the endpoint you are
+    attempting to use."
+  source: docs + probe
+  declared_in_openapi: false
+- status: 422
+  title: Unprocessable Content — validation error
+  description: >-
+    The request body could not be handled: a value out of range, a missing required field, or a
+    string that is not a member of one of the API's enumerations.
+  envelope: validation-error
+  schema: '#/components/schemas/HTTPValidationError'
+  remediation: >-
+    Cross-reference the schema in the API spec. The msg field names the permitted enumeration
+    members where the failure is an enum mismatch.
+  common_causes:
+  - peril outside [flood, wind, seismic] for return-period operations, or [flood, integrated, wind, seismic] for average-annual operations
+  - climate_change outside [ccbaseline, cc2050_45]
+  - return_period_yrs outside [50, 100, 250, 500, 1000]
+  - planning_horizon_yrs outside [1, 5, 10, 20, 30]
+  - interruption_type outside [integrated, utility, ingress_egress, community, repair_time, ports, airports, bridges, highways]
+  - latitude outside -90..90 or longitude outside -180..180
+  - max_distance_m outside 1.0..500.0
+  source: openapi + docs
+  operations: all
+- status: 4xx
+  title: Client error (general)
+  description: >-
+    "Codes in the 4xx range indicate an error that failed given the information provided (e.g., a
+    required parameter was misspelled or missing, a parameter was outside the supported range)."
+  source: docs
+- status: 5xx
+  title: Server error
+  description: >-
+    "Codes in the 5xx range indicate an error with One Concerns' servers (these are rare)."
+  remediation: Retry; the API is read-only so retries are safe.
+  source: docs
+gaps:
+- No vendor error-code registry — errors are distinguished only by HTTP status and free-text message.
+- 401 is documented in prose but is not declared on any operation in the OpenAPI, so a
+  spec-driven client or agent will not generate a handler for the most likely failure.
+- No 429 documented anywhere, and no rate-limit response shape published.
+- >-
+    The two envelopes ({"error": ...} vs {"detail": [...]}) differ in shape, so an agent must
+    parse both. A single envelope, or RFC 9457, would remove that branch.

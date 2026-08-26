@@ -1,0 +1,48 @@
+generated: '2026-08-26'
+method: searched
+source: https://developer.oneconcern.com/overview
+docs: https://developer.oneconcern.com/overview
+name: One Concern Domino AI API Rate Limits
+description: >-
+  One Concern publishes no rate limits for the Domino AI API. The developer portal has no rate
+  limit, quota, throttling or fair-use section; the OpenAPI declares no 429 response on any of
+  the five operations; and no RateLimit-* or X-RateLimit-* headers are documented. An honest zero.
+limit_count: 0
+rate_limits: []
+response_headers: []
+exhaustion_status: null
+retry_after: false
+evidence:
+- url: https://developer.oneconcern.com/overview
+  status: 200
+  note: >-
+    Full page read. Sections are Overview, Getting Started, Calculation Options, Responses,
+    Authentication, Headers, Errors, Versioning. No rate limit or quota section exists, and the
+    Errors section enumerates 2xx, 4xx (401, 422), 5xx and 204 with no mention of 429.
+- url: https://developer.oneconcern.com/openapi.json
+  status: 200
+  note: No 429 response object is declared on any of the five operations.
+- url: https://api.oneconcern.com/v1/location/business-interruption/return-period
+  status: 401
+  note: >-
+    Unauthenticated probe. The 401 response carries no RateLimit-* or Retry-After header. Limits
+    behind the gateway cannot be observed without a customer token.
+gateway:
+  product: Tyk
+  evidence: 'x-generator: tyk.io response header, behind Cloudflare'
+  note: >-
+    Tyk enforces per-key quotas and rate limits as a core feature, so limits almost certainly
+    exist on issued tokens — they are simply set per contract and never published. A consumer
+    learns their own limit from customer success, and an agent has no way to discover it.
+metering:
+  billing_model: per-call, attributed by the required client-id header
+  quote: >-
+    "One Concern will provide a breakdown of API calls by client-id as part of billing upon
+    request."
+  note: >-
+    Calls are metered and billed, but no price per call and no included volume is published. See
+    plans/one-concern-plans-pricing.yml.
+gaps:
+- No published limit, window, burst, or quota.
+- No rate-limit response headers, so an agent cannot pace itself or detect approaching exhaustion.
+- No documented 429 status or Retry-After behaviour.

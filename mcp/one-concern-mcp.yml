@@ -1,0 +1,91 @@
+generated: '2026-08-26'
+method: derived
+source: openapi/one-concern-domino-ai-openapi.json
+name: One Concern Domino AI MCP Candidate
+status: candidate
+description: >-
+  One Concern does not publish an MCP server. This is a DERIVED candidate tool list computed
+  from the five operations of the published Domino AI OpenAPI so the shape of an agent surface
+  is on record — it is not a server that exists, and no endpoint is asserted.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+  note: >-
+    Nobody ships a server. mcp.oneconcern.com does not resolve; no npm, PyPI, RubyGems or
+    crates.io package matches "oneconcern"; the GitHub org has no MCP repository; and
+    /.well-known/ai-plugin.json returns 404 on every host. The auth value records what a server
+    would have to carry (the customer-issued x-1c-api-token header plus a client-id header), not
+    an observed challenge.
+discovery_probes:
+- url: https://mcp.oneconcern.com
+  status: '<no response> (DNS/connection failure)'
+- url: https://oneconcern.com/.well-known/ai-plugin.json
+  status: 404
+- url: https://api.oneconcern.com/.well-known/ai-plugin.json
+  status: 404
+- url: https://developer.oneconcern.com/.well-known/ai-plugin.json
+  status: 200
+  note: 87-byte HTML meta-refresh shell — soft-404, not a manifest
+- url: https://registry.npmjs.org/-/v1/search?text=oneconcern
+  status: 200
+  note: 0 results
+tools:
+- name: get_business_interruption_risk_by_return_period
+  description: >-
+    Business-interruption risk score, mean downtime in days and standard deviation for the
+    closest modeled building to a latitude/longitude, at a chosen return period (50, 100, 250,
+    500 or 1000 years), for a chosen peril and interruption type.
+  rest_operation_id: Business_Interruption_Risk_Scores_By_Return_Period_v1_location_business_interruption_return_period_post
+  http: POST /v1/location/business-interruption/return-period
+  input_schema_ref: '#/components/schemas/BIRiskScoreRequestRP'
+  output_schema_ref: '#/components/schemas/BIRiskScoreResponse'
+  read_only: true
+- name: get_business_interruption_risk_average_annual
+  description: >-
+    Business-interruption risk score annualised across all return periods for the closest modeled
+    building to a latitude/longitude.
+  rest_operation_id: Business_Interruption_Risk_Scores_By_Average_Annual_Downtime_v1_location_business_interruption_average_annual_post
+  http: POST /v1/location/business-interruption/average-annual
+  input_schema_ref: '#/components/schemas/BIRiskScoreRequestAA'
+  output_schema_ref: '#/components/schemas/BIRiskScoreResponse'
+  read_only: true
+- name: get_business_interruption_risk_by_planning_horizon
+  description: >-
+    Business-interruption risk score over a forward planning horizon of 1, 5, 10, 20 or 30 years.
+  rest_operation_id: BI_Risk_Score_By_Planning_Horizon_v1_location_business_interruption_planning_horizon_post
+  http: POST /v1/location/business-interruption/planning-horizon
+  input_schema_ref: '#/components/schemas/BIRiskScoreRequestPH'
+  output_schema_ref: '#/components/schemas/BIRiskScoreResponse'
+  read_only: true
+- name: get_property_damage_by_return_period
+  description: >-
+    Direct structural property-damage ratio (mean and standard deviation) at a chosen return
+    period for the closest modeled building to a latitude/longitude.
+  rest_operation_id: Property_Damage_Ratio_By_Return_Period_v1_location_property_damage_return_period_post
+  http: POST /v1/location/property-damage/return-period
+  input_schema_ref: '#/components/schemas/PropertyDamageRequestRP'
+  output_schema_ref: '#/components/schemas/PropertyDamageResponse'
+  read_only: true
+- name: get_property_damage_average_annual
+  description: >-
+    Direct structural property-damage ratio annualised across all return periods.
+  rest_operation_id: Property_Damage_Ratio_By_Average_Annual_Downtime_v1_location_property_damage_average_annual_post
+  http: POST /v1/location/property-damage/average-annual
+  input_schema_ref: '#/components/schemas/PropertyDamageRequestAA'
+  output_schema_ref: '#/components/schemas/PropertyDamageResponse'
+  read_only: true
+agent_notes:
+- Every tool is read-only. There is no write surface, so no confirmation or reversal step is needed.
+- >-
+  A 204 No Content is a legitimate answer meaning the location is outside modeled coverage. A
+  tool wrapper must translate it into a structured "no data" result rather than an error.
+- >-
+  peril accepts `integrated` on the average-annual and planning-horizon tools but NOT on the
+  return-period tools. A single shared enum in a tool wrapper would produce 422s.
+- >-
+  Every call requires a client-id header. A server implementation must accept it as
+  configuration, not per-call input.
