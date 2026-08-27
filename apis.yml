@@ -34,33 +34,16 @@ tags:
 - Financial Services
 - Artificial Intelligence
 apis:
-- aid: one-concern-domino-ai-api
-  name: One Concern Domino AI API
-  description: >-
-    The Domino AI API returns One Concern's location-based physical-risk analytics for a
-    single latitude/longitude. Five POST operations cover business-interruption risk scores
-    by return period, by average annual downtime and by planning horizon, and property-damage
-    ratios by return period and by average annual downtime. Every request selects a peril
-    (flood, wind, seismic, integrated), a climate-change scenario (ccbaseline or cc2050_45),
-    and for business interruption an interruption type (integrated, utility, ingress_egress,
-    community, repair_time, ports, airports, bridges, highways). Responses carry the One
-    Concern building id, the mean and standard deviation of downtime in days (or the damage
-    ratio and its standard deviation) and a low/med/high risk label. Authentication is a
-    customer-issued API token in the x-1c-api-token header plus a required client-id header
-    used for billing attribution; an optional transaction-id header supports per-call
-    tracing. Version provenance is returned on every response as x-1c-api-version and
-    x-1c-data-version.
+- aid: one-concern:one-concern-location-api
+  name: One Concern Location API
+  description: The Location API from One Concern — 5 operation(s) for location.
   humanURL: https://developer.oneconcern.com/overview
   baseURL: https://api.oneconcern.com
   tags:
-  - Climate Risk
-  - Business Interruption
-  - Property Damage
-  - Catastrophe Modeling
-  - Geospatial
+  - Location
   properties:
   - type: OpenAPI
-    url: openapi/one-concern-domino-ai-openapi.json
+    url: openapi/one-concern-location-api-openapi.yml
   - type: Documentation
     url: https://developer.oneconcern.com/overview
   - type: APIReference
@@ -75,8 +58,6 @@ apis:
     url: errors/one-concern-problem-types.yml
   - type: DataModel
     url: data-model/one-concern-data-model.yml
-  - type: Overlay
-    url: overlays/one-concern-domino-ai-overlay.yaml
   - type: Lifecycle
     url: lifecycle/one-concern-lifecycle.yml
   - type: Conformance
@@ -87,14 +68,16 @@ apis:
     url: plans/one-concern-plans-pricing.yml
   - type: MCPCandidate
     url: mcp/one-concern-mcp.yml
-  - type: AgentSkill
-    url: skills/_index.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/one-concern-domino-ai-overlay.yaml
+- type: AgentSkill
+  url: skills/_index.yml
 - type: Website
   url: https://oneconcern.com/en/
 - type: DeveloperPortal
