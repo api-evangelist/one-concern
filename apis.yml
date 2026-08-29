@@ -14,6 +14,18 @@ description: >-
   customers through the Domino AI API, a five-operation REST contract documented at
   developer.oneconcern.com and served from api.oneconcern.com behind a Tyk gateway with a
   customer-issued x-1c-api-token header.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://oneconcern.com/wp-content/uploads/2021/10/One-Concern-Logo.png
 url: https://raw.githubusercontent.com/api-evangelist/one-concern/refs/heads/main/apis.yml
 x-type: company
