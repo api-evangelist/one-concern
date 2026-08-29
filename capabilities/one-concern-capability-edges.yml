@@ -1,0 +1,28 @@
+slug: one-concern
+provider: One Concern
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Real Estate
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Location
+  spec_file: one-concern-location-api-openapi.yml
+  capability_id: BC-4920.60
+  capability_id_l1: BC-4920
+  capability_name: Asset Risk Management
+  confidence: 0.75
+  evidence: 'POST /v1/location/property-damage/return-period  Property_Damage_Ratio_By_Return_Period ...
+    schemas: PerilRP, ClimateChange, PlanningHorizon'
+  reason: Operations score physical climate and natural-catastrophe exposure for a specific location —
+    property damage ratios and business-interruption downtime by return period and planning horizon. That
+    is asset-level physical/climate risk quantification, matching Asset Risk Management. Confidence below
+    0.8 because the API is a risk-analytics feed that could also serve insurance underwriting rather than
+    owner-side asset stewardship.
