@@ -1,0 +1,707 @@
+openapi: 3.2.0
+info:
+  title: Domino AI Location API
+  description: Domino AI API
+  version: v1.31.2
+host: dna-api.dev.onec.co
+basePath: /v1
+schemes:
+- https
+tags:
+- name: Location
+paths:
+  /v1/location/business-interruption/return-period:
+    post:
+      summary: Business Interruption Risk Scores By Return Period
+      description: '### Business Interruption Risk Scores By Return Period
+
+
+        returns business interruption risk scores for location entries
+
+        based on the return period'
+      operationId: Business_Interruption_Risk_Scores_By_Return_Period_v1_location_business_interruption_return_period_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Client-Id
+          examples:
+          - test-client-id
+        name: client-id
+        in: header
+      - required: false
+        schema:
+          type: string
+          title: Transaction-Id
+          examples:
+          - test-transaction-id
+        name: transaction-id
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BIRiskScoreRequestRP'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BIRiskScoreResponse'
+        '204':
+          description: No data available for given latitude/longitude
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Location
+  /v1/location/business-interruption/average-annual:
+    post:
+      summary: Business Interruption Risk Scores By Average Annual Downtime
+      description: '### Business Interruption Risk Scores By Average Annual
+
+
+        returns business interruption risk scores for location entries
+
+        based on the average annual downtime'
+      operationId: Business_Interruption_Risk_Scores_By_Average_Annual_Downtime_v1_location_business_interruption_average_annual_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Client-Id
+          examples:
+          - test-client-id
+        name: client-id
+        in: header
+      - required: false
+        schema:
+          type: string
+          title: Transaction-Id
+          examples:
+          - test-transaction-id
+        name: transaction-id
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BIRiskScoreRequestAA'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BIRiskScoreResponse'
+        '204':
+          description: No data available for given latitude/longitude
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Location
+  /v1/location/business-interruption/planning-horizon:
+    post:
+      summary: Bi Risk Score By Planning Horizon
+      description: '### BI Risk by Planning Horizon
+
+
+        returns bi risk score for location entries based on planning horizon years'
+      operationId: BI_Risk_Score_By_Planning_Horizon_v1_location_business_interruption_planning_horizon_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Client-Id
+          examples:
+          - test-client-id
+        name: client-id
+        in: header
+      - required: false
+        schema:
+          type: string
+          title: Transaction-Id
+          examples:
+          - test-transaction-id
+        name: transaction-id
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BIRiskScoreRequestPH'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BIRiskScoreResponse'
+        '204':
+          description: No data available for given latitude/longitude
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Location
+  /v1/location/property-damage/return-period:
+    post:
+      summary: Property Damage Ratio By Return Period
+      description: '### Property Damage By Return Period
+
+
+        returns property damage for location entries based on the return period'
+      operationId: Property_Damage_Ratio_By_Return_Period_v1_location_property_damage_return_period_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Client-Id
+          examples:
+          - test-client-id
+        name: client-id
+        in: header
+      - required: false
+        schema:
+          type: string
+          title: Transaction-Id
+          examples:
+          - test-transaction-id
+        name: transaction-id
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyDamageRequestRP'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyDamageResponse'
+        '204':
+          description: No data available for given latitude/longitude
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Location
+  /v1/location/property-damage/average-annual:
+    post:
+      summary: Property Damage Ratio By Average Annual Downtime
+      description: '### Property Damage By Average Annual Downtime
+
+
+        returns property damage for location entries based on the average annual downtime'
+      operationId: Property_Damage_Ratio_By_Average_Annual_Downtime_v1_location_property_damage_average_annual_post
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Client-Id
+          examples:
+          - test-client-id
+        name: client-id
+        in: header
+      - required: false
+        schema:
+          type: string
+          title: Transaction-Id
+          examples:
+          - test-transaction-id
+        name: transaction-id
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyDamageRequestAA'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyDamageResponse'
+        '204':
+          description: No data available for given latitude/longitude
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Location
+components:
+  schemas:
+    BIRiskScoreRequestPH:
+      properties:
+        interruption_type:
+          allOf:
+          - $ref: '#/components/schemas/BusinessInterruptionType'
+          title: interruption_type
+          description: Interruption type, also known as the dependency or lifeline, refers to the component of infrastructure that is essential to recovery. Please note that different countries and peril combinations may support different dependencies.
+        latitude:
+          type: number
+          maximum: 90.0
+          minimum: -90.0
+          title: latitude
+          description: The latitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - 33.814437
+        longitude:
+          type: number
+          maximum: 180.0
+          minimum: -180.0
+          title: longitude
+          description: The longitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - -118.051187
+        max_distance_m:
+          type: number
+          maximum: 500.0
+          exclusiveMinimum: 1.0
+          title: max_distance_m
+          description: The maximum distance from the provided (lat,long) pair to use when retrieving built object downtime statistics, bi risk scores or other metrics
+          default: 500
+          examples:
+          - 100
+          - 250
+          - 500
+          units: meters
+        climate_change:
+          allOf:
+          - $ref: '#/components/schemas/ClimateChange'
+          title: climate_change
+          description: The climate change scenario (by Average Annual Downtime)
+        planning_horizon_yrs:
+          allOf:
+          - $ref: '#/components/schemas/PlanningHorizon'
+          title: planning_horizon
+          description: The planning_horizon used to calculate statistics and metrics
+          units: years
+        peril:
+          allOf:
+          - $ref: '#/components/schemas/PerilAA'
+          title: peril
+          description: The cause of loss or damage
+          examples:
+          - flood
+      additionalProperties: false
+      type: object
+      required:
+      - interruption_type
+      - latitude
+      - longitude
+      - climate_change
+      - planning_horizon_yrs
+      - peril
+      title: BIRiskScoreRequestPH
+      description: BI Risk Score Request class (by Planning Horizon)
+    BusinessInterruptionType:
+      type: string
+      enum:
+      - integrated
+      - utility
+      - ingress_egress
+      - community
+      - repair_time
+      - ports
+      - airports
+      - bridges
+      - highways
+      title: BusinessInterruptionType
+      description: 'Interruption type, also known as the dependency or lifeline, refers to the component of infrastructure that is essential to recovery.
+
+        Please note that different countries and peril combinations may support different dependencies.'
+    PerilRP:
+      type: string
+      enum:
+      - flood
+      - wind
+      - seismic
+      title: PerilRP
+      description: Peril for Return Period. Peril is the cause of downtime.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PropertyDamageRequestRP:
+      properties:
+        latitude:
+          type: number
+          maximum: 90.0
+          minimum: -90.0
+          title: latitude
+          description: The latitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - 33.814437
+        longitude:
+          type: number
+          maximum: 180.0
+          minimum: -180.0
+          title: longitude
+          description: The longitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - -118.051187
+        max_distance_m:
+          type: number
+          maximum: 500.0
+          exclusiveMinimum: 1.0
+          title: max_distance_m
+          description: The maximum distance from the provided (lat,long) pair to use when retrieving built object downtime statistics, bi risk scores or other metrics
+          default: 500
+          examples:
+          - 100
+          - 250
+          - 500
+          units: meters
+        peril:
+          allOf:
+          - $ref: '#/components/schemas/PerilRP'
+          title: peril
+          description: The cause of loss or damage
+          examples:
+          - flood
+        climate_change:
+          allOf:
+          - $ref: '#/components/schemas/ClimateChange'
+          title: climate_change
+          description: The climate change scenario (by Return Period)
+        return_period_yrs:
+          allOf:
+          - $ref: '#/components/schemas/ReturnPeriod'
+          title: return_period_yrs
+          description: The return period used to calculate statistics and metrics in years
+          units: years
+      additionalProperties: false
+      type: object
+      required:
+      - latitude
+      - longitude
+      - peril
+      - climate_change
+      - return_period_yrs
+      title: PropertyDamageRequestRP
+      description: Property Damage Request (Return Period) for V1 endpoints
+    ClimateChange:
+      type: string
+      enum:
+      - ccbaseline
+      - cc2050_45
+      title: ClimateChange
+      description: Average annual downtime climate change request enums
+    PropertyDamageResponse:
+      properties:
+        id:
+          type: string
+          title: id
+          description: ID (uuid) of the location
+        damage_ratio_avg:
+          type: number
+          title: damage_ratio_avg
+          description: The direct structural impact of a hazard on a particular location of interest for risk analysis
+          examples:
+          - '0.1'
+        damage_ratio_stdev:
+          type: number
+          title: damage_ratio_stdev
+          description: The standard deviation of the property damage for a particular location of interest for risk analysis
+          examples:
+          - '0.05'
+      type: object
+      required:
+      - id
+      - damage_ratio_avg
+      - damage_ratio_stdev
+      title: PropertyDamageResponse
+      description: Response class that holds the retrieved property damage for a location
+    BIRiskScoreResponse:
+      properties:
+        id:
+          type: string
+          title: id
+          description: ID (uuid) of the location
+        downtime_avg_days:
+          type: number
+          title: downtime_avg_days
+          description: The average downtime for a particular location of interest for risk analysis in days
+          examples:
+          - 1.5
+          units: days
+        downtime_stdev_days:
+          type: number
+          title: downtime_stdev_days
+          description: The standard deviation of the downtime for a particular location of interest for risk analysis
+          examples:
+          - 1.5
+          units: days
+        score:
+          type: string
+          title: score
+          description: The risk score label applied to a particular location of interest for risk analysis
+          examples:
+          - very_low
+          - low
+          - moderate
+          - significant
+          - high
+          - very_high
+          - extreme
+      type: object
+      required:
+      - id
+      - downtime_avg_days
+      - downtime_stdev_days
+      - score
+      title: BIRiskScoreResponse
+      description: Response class that holds the retrieved bi risk score for a location
+    PlanningHorizon:
+      type: integer
+      enum:
+      - 1
+      - 5
+      - 10
+      - 20
+      - 30
+      title: PlanningHorizon
+      description: Planning horizon time period type enums
+    ReturnPeriod:
+      type: integer
+      enum:
+      - 50
+      - 100
+      - 250
+      - 500
+      - 1000
+      title: ReturnPeriod
+      description: "Time period of interest in years.\n\nNote:\n    - average annual defines time period as one year\n    - these are the set of return period available for the V1 endpoints"
+    BIRiskScoreRequestRP:
+      properties:
+        interruption_type:
+          allOf:
+          - $ref: '#/components/schemas/BusinessInterruptionType'
+          title: interruption_type
+          description: Interruption type, also known as the dependency or lifeline, refers to the component of infrastructure that is essential to recovery. Please note that different countries and peril combinations may support different dependencies.
+        latitude:
+          type: number
+          maximum: 90.0
+          minimum: -90.0
+          title: latitude
+          description: The latitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - 33.814437
+        longitude:
+          type: number
+          maximum: 180.0
+          minimum: -180.0
+          title: longitude
+          description: The longitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - -118.051187
+        max_distance_m:
+          type: number
+          maximum: 500.0
+          exclusiveMinimum: 1.0
+          title: max_distance_m
+          description: The maximum distance from the provided (lat,long) pair to use when retrieving built object downtime statistics, bi risk scores or other metrics
+          default: 500
+          examples:
+          - 100
+          - 250
+          - 500
+          units: meters
+        climate_change:
+          allOf:
+          - $ref: '#/components/schemas/ClimateChange'
+          title: climate_change
+          description: The climate change scenario (by Return Period)
+        return_period_yrs:
+          allOf:
+          - $ref: '#/components/schemas/ReturnPeriod'
+          title: return_period_yrs
+          description: The return period used to calculate statistics and metrics in years
+          units: years
+        peril:
+          allOf:
+          - $ref: '#/components/schemas/PerilRP'
+          title: peril
+          description: The cause of loss or damage
+          examples:
+          - flood
+      additionalProperties: false
+      type: object
+      required:
+      - interruption_type
+      - latitude
+      - longitude
+      - climate_change
+      - return_period_yrs
+      - peril
+      title: BIRiskScoreRequestRP
+      description: BI Risk Score Request class (by Return Period) for V1 endpoints
+    BIRiskScoreRequestAA:
+      properties:
+        interruption_type:
+          allOf:
+          - $ref: '#/components/schemas/BusinessInterruptionType'
+          title: interruption_type
+          description: Interruption type, also known as the dependency or lifeline, refers to the component of infrastructure that is essential to recovery. Please note that different countries and peril combinations may support different dependencies.
+        latitude:
+          type: number
+          maximum: 90.0
+          minimum: -90.0
+          title: latitude
+          description: The latitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - 33.814437
+        longitude:
+          type: number
+          maximum: 180.0
+          minimum: -180.0
+          title: longitude
+          description: The longitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - -118.051187
+        max_distance_m:
+          type: number
+          maximum: 500.0
+          exclusiveMinimum: 1.0
+          title: max_distance_m
+          description: The maximum distance from the provided (lat,long) pair to use when retrieving built object downtime statistics, bi risk scores or other metrics
+          default: 500
+          examples:
+          - 100
+          - 250
+          - 500
+          units: meters
+        climate_change:
+          allOf:
+          - $ref: '#/components/schemas/ClimateChange'
+          title: climate_change
+          description: The climate change scenario (by Average Annual Downtime)
+        peril:
+          allOf:
+          - $ref: '#/components/schemas/PerilAA'
+          title: peril
+          description: The cause of loss or damage
+          examples:
+          - flood
+      additionalProperties: false
+      type: object
+      required:
+      - interruption_type
+      - latitude
+      - longitude
+      - climate_change
+      - peril
+      title: BIRiskScoreRequestAA
+      description: BI Risk Score Request class (by Average Annual Downtime)
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PerilAA:
+      type: string
+      enum:
+      - flood
+      - integrated
+      - wind
+      - seismic
+      title: PerilAA
+      description: Peril for Average Annual. Peril is the cause of downtime.
+    PropertyDamageRequestAA:
+      properties:
+        latitude:
+          type: number
+          maximum: 90.0
+          minimum: -90.0
+          title: latitude
+          description: The latitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - 33.814437
+        longitude:
+          type: number
+          maximum: 180.0
+          minimum: -180.0
+          title: longitude
+          description: The longitude used as part of the (lat,long) pair that is provided in requests/responses
+          examples:
+          - -118.051187
+        max_distance_m:
+          type: number
+          maximum: 500.0
+          exclusiveMinimum: 1.0
+          title: max_distance_m
+          description: The maximum distance from the provided (lat,long) pair to use when retrieving built object downtime statistics, bi risk scores or other metrics
+          default: 500
+          examples:
+          - 100
+          - 250
+          - 500
+          units: meters
+        peril:
+          allOf:
+          - $ref: '#/components/schemas/PerilAA'
+          title: peril
+          description: The cause of loss or damage
+          examples:
+          - flood
+        climate_change:
+          allOf:
+          - $ref: '#/components/schemas/ClimateChange'
+          title: climate_change
+          description: The climate change scenario (by Average Annual Downtime)
+      additionalProperties: false
+      type: object
+      required:
+      - latitude
+      - longitude
+      - peril
+      - climate_change
+      title: PropertyDamageRequestAA
+      description: Property Damage Request (Average Annual)
