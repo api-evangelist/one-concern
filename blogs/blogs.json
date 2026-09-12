@@ -2,6 +2,13 @@
   "repo": "one-concern",
   "feeds": [
     {
+      "source": "https://oneconcern.com/en/news/",
+      "feed_url": "https://oneconcern.com/en/news/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
       "source": "https://developer.oneconcern.com/overview",
       "feed_url": "https://developer.oneconcern.com/overview",
       "title": "",
@@ -9,13 +16,13 @@
       "method": "none"
     },
     {
-      "source": "https://oneconcern.com/en/news/",
+      "source": "https://oneconcern.com/feed/",
       "feed_url": "https://oneconcern.com/feed/",
       "title": "",
       "saved": 0,
-      "method": "discovered"
+      "method": "feed"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-08-30T22:33:40Z"
+  "post_count": 10,
+  "fetched": "2026-09-06T19:17:18Z"
 }
