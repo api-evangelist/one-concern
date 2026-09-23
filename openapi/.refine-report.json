@@ -1,0 +1,26 @@
+{
+  "provider": "one-concern",
+  "sources": [
+    "_original/one-concern-domino-ai-openapi.json"
+  ],
+  "outputs": [
+    "one-concern-location-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "one-concern-domino-ai-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "one-concern-domino-ai-openapi.json: tagged paths POST /v1/location/business-interruption/return-period -> Location",
+    "one-concern-domino-ai-openapi.json: tagged paths POST /v1/location/business-interruption/average-annual -> Location",
+    "one-concern-domino-ai-openapi.json: tagged paths POST /v1/location/business-interruption/planning-horizon -> Location",
+    "one-concern-domino-ai-openapi.json: tagged paths POST /v1/location/property-damage/return-period -> Location",
+    "one-concern-domino-ai-openapi.json: tagged paths POST /v1/location/property-damage/average-annual -> Location",
+    "one-concern-domino-ai-openapi.json: declared missing tag: Location",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "one-concern-location-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

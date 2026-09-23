@@ -1,0 +1,26 @@
+# Front Door AI Index — one-concern — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: one-concern
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: oneconcern.com
+  final_host: oneconcern.com
+  ownership: own
+  owner: one-concern
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 6
+  host_score: 6
+  density: 17.34
+  words: 346
+  tiers:
+    agentic: 0
+    core: 6
+    model: 0
+  ambiguous: 0
+  top_terms:
+    AI: 4
+    ML: 2
