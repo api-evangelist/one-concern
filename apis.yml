@@ -56,8 +56,8 @@ tags:
 - Risk Analytics
 - Geospatial
 - Business Interruption
-- Real-Estate
-- Financial-Services
+- Real Estate
+- Financial Services
 - Artificial Intelligence
 tags_raw:
 - Climate Risk
@@ -71,6 +71,8 @@ tags_raw:
 - Real Estate
 - Financial Services
 - Artificial Intelligence
+- Real-Estate
+- Financial-Services
 apis:
 - aid: one-concern:one-concern-location-api
   name: One Concern Location API
