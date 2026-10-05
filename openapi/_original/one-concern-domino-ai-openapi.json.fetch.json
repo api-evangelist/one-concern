@@ -1,0 +1,12 @@
+{
+ "url": "https://developer.oneconcern.com/openapi.json",
+ "requested_url": "https://developer.oneconcern.com/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 40673,
+ "sha256": "8fe7466ac660561b1669a9f3c1696f6b6454c220a1bf2bac6648fb56fba661ad",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
