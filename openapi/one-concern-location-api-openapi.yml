@@ -705,3 +705,9 @@ components:
       - score
       title: BIRiskScoreResponse
       description: Response class that holds the retrieved bi risk score for a location
+x-provenance:
+  method: harvested
+  publisher: One Concern
+  source: https://developer.oneconcern.com/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
