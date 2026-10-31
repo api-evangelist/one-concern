@@ -64,5 +64,110 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-One Concern is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/one-concern_stock/
+One Concern is a Palo Alto, California climate-resilience analytics company that builds a digital twin of the built environment to quantify physical climate and natural-catastrophe risk in units of time rather than broad-brush hazard bands. Its Domino AI platform models the recovery of an individual building together with the lifelines it depends on — power distribution, ports, airports, roads and bridges, the surrounding residential community — and returns business-interruption downtime statistics, property-damage ratios and a 1CRX resilience score for a given latitude and longitude, per peril (flood, tropical-cyclone wind, seismic ground shaking, or all perils integrated), per return period or planning horizon, and under baseline or 2050 climate-change scenarios. The company sells to insurers, reinsurers, financial services and real estate, and exposes the platform to customers through the Domino AI API, a five-operation REST contract documented at developer.oneconcern.com and served from api.oneconcern.com behind a Tyk gateway with a customer-issued x-1c-api-token header.
+
+**Areas:** Climate Risk · Catastrophe Modeling · Resilience · Insurance · Reinsurance · Risk Analytics · Geospatial · Business Interruption · Real Estate · Financial Services · Artificial Intelligence
+
+## One Concern on APIs.io
+
+Everything profiled for One Concern is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/one-concern/](https://apis.io/providers/one-concern/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [One Concern Location API](https://apis.io/apis/one-concern/one-concern-location-api/) — The Location API from One Concern — 5 operation(s) for location.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [One Concern Domino Ai Overlay](https://apis.io/overlays/one-concern/one-concern-domino-ai-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [One Concern Authentication](https://apis.io/security/one-concern/one-concern-authentication/)
+- [One Concern Domain Security](https://apis.io/security/one-concern/one-concern-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [One Concern Plans Pricing](https://apis.io/plans/one-concern/one-concern-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [One Concern Rate Limits](https://apis.io/rate-limits/one-concern/one-concern-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://oneconcern.com/en/)
+- [Documentation](https://developer.oneconcern.com/overview)
+- [Getting started](https://developer.oneconcern.com/overview)
+- [API reference](https://developer.oneconcern.com/api-spec)
+- [Support](https://oneconcern.com/en/contact/)
+- [Blog](https://oneconcern.com/en/news/)
+- [Terms of service](https://oneconcern.com/en/terms/)
+- [Privacy policy](https://oneconcern.com/en/privacy/)
+- [GitHub](https://github.com/oneconcern)
+
+## API Evangelist rating
+
+**Kin Score 33.8** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 41.6 |
+| Contract governance | 4.5 |
+| Operational transparency | 2.6 |
+| Developer ergonomics | 58.9 |
+| Access clarity | 21.1 |
+
+**Agent readiness 27.5** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 20.5** — Insurance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/one-concern/](https://apis.io/providers/one-concern/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for One Concern: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/one-concern/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
